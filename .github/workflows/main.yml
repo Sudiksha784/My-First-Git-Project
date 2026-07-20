@@ -1,4 +1,4 @@
-name: Basic GitHub Actions
+name: Python Tests
 
 on:
   push:
@@ -6,12 +6,20 @@ on:
       - main
 
 jobs:
-  hello:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Display Message
-        run: echo "Hello, GitHub Actions!"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run Tests
+        run: pytest
