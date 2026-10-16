@@ -1,0 +1,261 @@
+Experiment 8: Deploy a Static Site Using a CI/CD Pipeline
+
+1. Aim
+
+To create and deploy a static website using GitHub Pages and automate the deployment process using GitHub Actions.
+
+2. Requirements
+
+1. A GitHub account.
+2. An existing GitHub repository.
+3. An internet connection.
+4. A web browser.
+5. Basic knowledge of HTML and GitHub Actions.
+
+GitHub username: "Sudiksha784"
+
+Repository name: "My-First-Git-Project"
+
+Repository URL:
+https://github.com/Sudiksha784/My-First-Git-Project
+
+3. Introduction
+
+A static website contains files such as HTML, CSS, and JavaScript that can be served without a server-side application.
+
+CI/CD stands for Continuous Integration and Continuous Deployment. GitHub Actions can automatically build and deploy a website when changes are pushed to a repository.
+
+GitHub Pages is a hosting service that publishes static websites directly from a GitHub repository.
+
+4. Procedure
+
+Step 1: Open the repository
+
+1. Open a web browser.
+2. Visit https://github.com.
+3. Sign in to the GitHub account "Sudiksha784".
+4. Open the repository "My-First-Git-Project".
+5. Click the Code tab.
+6. Confirm that you can add files to the repository.
+
+Step 2: Create the website file
+
+1. Click Add file.
+2. Select Create new file.
+3. Enter the filename:
+
+"index.html"
+
+4. Paste the following HTML code into the editor.
+
+5. Program: index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My GitHub Pages Website</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4ff;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            padding: 35px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px #cccccc;
+        }
+
+        h1 {
+            color: #4b3f9b;
+        }
+
+        p {
+            color: #333333;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to My Website!</h1>
+        <p>This static website is hosted using GitHub Pages.</p>
+        <p>Created by Sudiksha.</p>
+        <p>Deployed automatically using GitHub Actions.</p>
+    </div>
+</body>
+</html>
+
+5. Scroll down to Commit changes.
+6. Enter the commit message "Add static website".
+7. Commit the file to the main branch.
+
+Step 3: Configure GitHub Pages deployment permissions
+
+1. Return to the repository.
+2. Click Settings.
+3. Select Pages from the left sidebar.
+4. Under Build and deployment, locate the Source option.
+5. Select GitHub Actions if that option is available.
+
+This allows a GitHub Actions workflow to deploy the website.
+
+Step 4: Create the deployment workflow
+
+1. Return to the Code tab.
+2. Click Add file → Create new file.
+3. Enter the following filename:
+
+".github/workflows/deploy.yml"
+
+4. Paste the complete workflow below.
+
+6. Program: deploy.yml
+
+name: Deploy Static Website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website files
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+5. Scroll down to Commit changes.
+6. Enter the commit message "Add static website deployment workflow".
+7. Commit the file to main.
+
+Important: This workflow uploads the repository contents as the website artifact. For a real project, keep the website files in a dedicated folder or configure the artifact path to include only the intended site files.
+
+Step 5: Understand the workflow
+
+- "name" specifies the workflow name.
+- "on.push" triggers deployment when changes are pushed to main.
+- "workflow_dispatch" allows manual execution.
+- "permissions" grants the workflow the permissions needed to publish the site.
+- "concurrency" helps prevent overlapping deployments.
+- "actions/checkout@v4" checks out the repository.
+- "actions/configure-pages@v5" configures GitHub Pages.
+- "actions/upload-pages-artifact@v3" packages the website files.
+- "actions/deploy-pages@v4" publishes the website.
+
+Step 6: Run and verify the deployment
+
+1. Click the Actions tab.
+2. Open Deploy Static Website.
+3. Select the latest workflow run.
+4. Click the "deploy" job.
+5. Wait until all steps complete successfully.
+6. Look for the green check mark.
+7. Open Settings → Pages.
+8. Find the published site URL, if displayed.
+9. Open the URL in a new browser tab.
+10. Verify that the heading "Welcome to My Website!" appears.
+
+For this repository, the expected URL is:
+
+https://sudiksha784.github.io/My-First-Git-Project/
+
+If GitHub Pages shows a different published URL, use the URL displayed in Settings → Pages.
+
+7. Expected Output
+
+The static website is published using GitHub Pages. When changes are pushed to the main branch, GitHub Actions automatically uploads and deploys the updated website.
+
+8. Result
+
+Thus, a static website was created and deployed using GitHub Pages with an automated GitHub Actions workflow.
+
+9. Troubleshooting and Error Recovery
+
+Error 1: The deployment workflow fails
+
+1. Open Actions.
+2. Click the failed workflow run.
+3. Open the deploy job.
+4. Identify the step with the red cross.
+5. Read its error message.
+6. Check the workflow filename, YAML indentation, and permissions.
+7. Correct the problem, commit the changes, and inspect the next run.
+
+Error 2: The website URL returns 404
+
+1. Open Settings → Pages.
+2. Confirm that the deployment source is GitHub Actions.
+3. Check that the deployment workflow completed successfully.
+4. Confirm that "index.html" exists in the uploaded website files.
+5. Use the published URL displayed in Settings → Pages.
+6. Wait briefly for the deployment to become available, then refresh the page.
+
+Error 3: GitHub Pages is not enabled
+
+1. Open Settings → Pages.
+2. Select GitHub Actions as the source if available.
+3. Check repository permissions and organization policies.
+4. Return to Actions and rerun the workflow if needed.
+
+Error 4: The workflow reports insufficient permissions
+
+1. Open the failed workflow run.
+2. Read the deployment error.
+3. Confirm that the workflow includes "pages: write" and "id-token: write".
+4. Check whether repository or organization policies restrict these permissions.
+5. Correct the settings if you have permission, then rerun the workflow.
+
+Error 5: The page opens but the design is missing
+
+1. Open "index.html" in the Code tab.
+2. Verify that the HTML and CSS were copied completely.
+3. Check for missing closing tags.
+4. Commit any corrections.
+5. Wait for the workflow to deploy the updated version and refresh the site.
+
+10. Final Verification Checklist
+
+- [ ] "index.html" exists in the repository.
+- [ ] ".github/workflows/deploy.yml" exists.
+- [ ] GitHub Pages uses GitHub Actions as its deployment source.
+- [ ] The deployment workflow completes successfully.
+- [ ] A published website URL is available.
+- [ ] The website opens and displays the expected heading.
