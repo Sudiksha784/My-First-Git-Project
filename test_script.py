@@ -1,4 +1,3 @@
-```python
 import requests
 
 def test_dependency():
@@ -11,4 +10,4 @@ def test_dependency():
 
 if __name__ == "__main__":
     test_dependency()
-```
+
