@@ -1,0 +1,60 @@
+Experiment 3: Create and Merge Branches in Git
+
+Aim
+
+To create a new branch, make changes in the branch, and merge it into the main branch using Git commands.
+
+Requirements
+
+- Git installed on the computer
+- GitHub account
+- A local Git repository
+
+Procedure
+
+1. Open the project repository.
+2. Check the current branch.
+3. Create a new branch.
+4. Switch to the new branch.
+5. Create a file and commit the changes.
+6. Switch back to the main branch.
+7. Merge the new branch into the main branch.
+8. Verify the merged changes.
+
+Commands
+
+git clone https://github.com/Sudiksha784/My-First-Git-Project.git
+cd My-First-Git-Project
+git branch
+git switch -c feature
+echo "Branch experiment" > feature.txt
+git add .
+git commit -m "Add feature file"
+git switch main
+git merge feature
+git push origin main
+
+Explanation of Commands
+
+- "git clone URL" – Downloads the repository from GitHub.
+- "cd My-First-Git-Project" – Opens the project folder.
+- "git branch" – Displays the available local branches.
+- "git switch -c feature" – Creates and switches to a new branch named "feature".
+- "echo "Branch experiment" > feature.txt" – Creates a file.
+- "git add ." – Stages the changes.
+- "git commit -m "Add feature file"" – Saves the changes.
+- "git switch main" – Switches to the main branch.
+- "git merge feature" – Merges the feature branch into main.
+- "git push origin main" – Uploads the merged changes to GitHub.
+
+Expected Output
+
+The feature branch is created, and its changes are merged into the main branch successfully.
+
+Result
+
+Thus, a new Git branch was created, modified, and merged into the main branch successfully.
+
+Important Note
+
+If the repository is already cloned, do not clone it again. Open the existing folder and continue from "git switch -c feature". If the branch already exists, switch to it or choose another branch name. After merging, the feature file should appear in the main branch.
