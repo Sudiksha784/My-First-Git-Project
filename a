@@ -1,0 +1,77 @@
+# Experiment A: Run Tests After Installing Dependencies
+
+## Aim
+To configure a GitHub Actions workflow that installs project dependencies and runs an automated test script.
+
+## Procedure
+
+1. Open your GitHub repository.
+2. Click **Add file → Create new file**.
+3. Enter the path `.github/workflows/test-after-install.yml`.
+4. Paste the following code:
+
+```yaml
+name: Install Dependencies and Test
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run test script
+        run: python test_script.py
+```
+
+5. Create `requirements.txt` in the repository root:
+
+```text
+requests
+```
+
+6. Create `test_script.py` in the repository root:
+
+```python
+import requests
+
+def test_dependency():
+    response = requests.get(
+        "https://example.com",
+        timeout=15
+    )
+    assert response.status_code == 200
+    print("Dependency test passed!")
+
+if __name__ == "__main__":
+    test_dependency()
+```
+
+7. Commit all three files to the `main` branch.
+8. Open the **Actions** tab.
+9. Select **Install Dependencies and Test**.
+10. Open the latest run and inspect the logs.
+
+## Expected Result
+
+GitHub Actions checks out the repository, installs Python, installs the dependency listed in `requirements.txt`, and runs `test_script.py`. If the dependency installation and network request succeed, the workflow finishes successfully.
+
+## Result
+
+Thus, a GitHub Actions workflow was configured to install dependencies and run a test script automatically.
